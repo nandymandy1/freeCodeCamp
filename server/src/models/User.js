@@ -1,3 +1,4 @@
+import { pick } from "lodash";
 import { sign } from "jsonwebtoken";
 import { SECRET } from "../constants";
 import { Schema, model } from "mongoose";
@@ -38,7 +39,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.methods.comparePassword = async function (password) {
-  return await compare(this.password, password);
+  return await compare(password, this.password);
 };
 
 UserSchema.methods.signJWT = async function () {
@@ -49,6 +50,10 @@ UserSchema.methods.signJWT = async function () {
     username: this.username,
   };
   return await sign(payload, SECRET, { expiresIn: "2 days" });
+};
+
+UserSchema.methods.serializeUser = function () {
+  return pick(this, ["_id", "username", "email", "name", "avatar"]);
 };
 
 const User = model("users", UserSchema);

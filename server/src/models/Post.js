@@ -16,6 +16,10 @@ const PostSchema = new Schema(
       default:
         "http://www.surgesonelectric.com/wp-content/themes/azoomtheme/images/demo/demo-image-default.jpg",
     },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
   { timestamps: true }
 );

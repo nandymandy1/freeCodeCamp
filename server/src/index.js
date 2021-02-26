@@ -6,6 +6,10 @@ import { success, error } from "consola";
 // Import Application Constants
 import { PORT, DB } from "./constants";
 
+// Router Group Imports
+import UserRouter from "./router/users";
+import PostRouter from "./router/posts";
+
 // Initialize the application
 const app = express();
 
@@ -13,12 +17,9 @@ const app = express();
 app.use(json());
 app.use(cors());
 
-// // Test Route
-// app.get("/", async (req, res) => {
-//   return res.status(200).json({
-//     message: "HELLO WORLD",
-//   });
-// });
+// Inject Routers
+app.use("/api/users", UserRouter);
+app.use("/api/posts", PostRouter);
 
 // Main Application Functions
 const main = async () => {
