@@ -1,5 +1,6 @@
 import cors from "cors";
 import mongoose from "mongoose";
+import passport from "passport";
 import express, { json } from "express";
 import { success, error } from "consola";
 
@@ -16,6 +17,9 @@ const app = express();
 // Inject Application Middlewares
 app.use(json());
 app.use(cors());
+// Initialize Passport
+app.use(passport.initialize());
+require("./middlewares/passport");
 
 // Inject Routers
 app.use("/api/users", UserRouter);

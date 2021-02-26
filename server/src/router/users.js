@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { User } from "../models";
+import { userAuth } from "../middlewares/auth.guard";
 import { RegisterRules, LoginRules } from "../validations";
 import validator from "../middlewares/validationMiddleware";
 
@@ -86,12 +87,15 @@ router.post("/login", LoginRules, validator, async (req, res) => {
     });
   }
 });
+
 /**
  * @description Api to get authenticated user
  * @api '/api/users/authenticate'
- * @access public
+ * @access private
  * @type GET
  */
-router.get("/authenticate", async (req, res) => {});
+router.get("/authenticate", userAuth, async (req, res) => {
+  return res.json(req.user);
+});
 
 export default router;
