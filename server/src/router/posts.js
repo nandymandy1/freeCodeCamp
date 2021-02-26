@@ -6,6 +6,34 @@ import validator from "../middlewares/validationMiddleware";
 
 const router = Router();
 
+const postLabels = {
+  limit: "perPage",
+  nextPage: "next",
+  prevPage: "prev",
+  meta: "paginator",
+  docs: "postsList",
+  page: "currentPage",
+  pagingCounter: "slNo",
+  totalDocs: "postCount",
+  totalPages: "pageCount",
+};
+
+/**
+ * @description Api to get all posts
+ * @api '/api/posts/all-posts'
+ * @access public
+ * @type GET
+ */
+router.get("/all-posts", async (req, res) => {
+  const options = {
+    limit: 10,
+    customLabels: postLabels,
+    page: req.query.page || 1,
+  };
+  let result = await Post.paginate({}, options);
+  return res.status(200).json(result);
+});
+
 /**
  * @description Api to create a post
  * @api '/api/posts'
@@ -32,7 +60,7 @@ router.post("/", userAuth, PostRules, validator, async (req, res) => {
 /**
  * @description Api to create a post
  * @api '/api/posts'
- * @access private
+ * @access public
  * @type GET
  */
 router.get("/:id", async (req, res) => {
